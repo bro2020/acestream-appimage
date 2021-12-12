@@ -23,7 +23,7 @@ script:
   - mkdir -p opt/acestream
   - cp -rf ../{acestream.conf,acestreamengine,start-engine,data,lib} opt/acestream
   - cp ../acestream-3.1.49.png usr/share/icons/hicolor/acestream-3.1.49.png
-  - cp -rf opt/acestream/lib/* usr/lib/
+#  - cp -rf opt/acestream/lib/* usr/lib/
   - cat > acestream-3.1.49.desktop <<EOF
   - [Desktop Entry]
   - Type=Application
@@ -41,11 +41,11 @@ script:
   - export LD_LIBRARY_PATH="$HERE/usr/lib/x86_64-linux-gnu":$LD_LIBRARY_PATH
   - export LD_LIBRARY_PATH="$HERE/lib":$LD_LIBRARY_PATH
   - export LD_LIBRARY_PATH="$HERE/lib/x86_64-linux-gnu":$LD_LIBRARY_PATH
-#  - export LD_LIBRARY_PATH="$ROOT/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$ROOT/lib":$LD_LIBRARY_PATH
   - export LD_LIBRARY_PATH="$HERE/lib/python2.7":$LD_LIBRARY_PATH
-  - export PYTHONHOME="$HERE/usr/":$PYTHONHOME
+  - export PYTHONHOME="$ROOT":"$HERE/usr/":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"${PATH}"
-  - "${ROOT}"/acestreamengine --lib-path "$HERE/usr/" "$@"
+  - "${ROOT}"/acestreamengine --lib-path "$ROOT" "$@"
   - EOF
   - chmod a+x ./AppRun
   - ./opt/acestream/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1 > ../VERSION

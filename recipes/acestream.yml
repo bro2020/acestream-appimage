@@ -7,10 +7,10 @@ ingredients:
     - curl
     - libpython2.7
     - net-tools
-#    - python-apsw
-#    - python-lxml
-#    - python-m2crypto
-#    - python-pkg-resources
+    - python-apsw
+    - python-lxml
+    - python-m2crypto
+    - python-pkg-resources
 
   script:
     - curl --silent "http://acestream.org/downloads/linux/acestream_3.1.49_debian_9.9_x86_64.tar.gz" | tar --extract --gzip

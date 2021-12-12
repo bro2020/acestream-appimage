@@ -45,7 +45,7 @@ script:
   - export LD_LIBRARY_PATH="$HERE/usr/lib/python2.7":$LD_LIBRARY_PATH
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
-  - "${ROOT}"/acestreamengine --lib-path "$ROOT" "$@"
+  - "${ROOT}"/acestreamengine --lib-path "$HERE/usr" "$@"
   - EOF
   - chmod a+x ./AppRun
   - ./opt/acestream/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1 > ../VERSION

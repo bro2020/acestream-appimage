@@ -43,7 +43,7 @@ script:
   - export LD_LIBRARY_PATH="$HERE/lib/x86_64-linux-gnu":$LD_LIBRARY_PATH
 #  - export LD_LIBRARY_PATH="$ROOT/lib":$LD_LIBRARY_PATH
   - export LD_LIBRARY_PATH="$HERE/usr/lib/python2.7":$LD_LIBRARY_PATH
-  - export PYTHONHOME="$HERE/usr/lib/python2.7":$PYTHONHOME
+  - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
   - "${ROOT}"/acestreamengine --lib-path "$ROOT" "$@"
   - EOF

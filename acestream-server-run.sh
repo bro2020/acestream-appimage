@@ -12,4 +12,4 @@ mkdir -p /home/$USER/.ACEStream/
 
 echo "Сервер доступен локально по адресу: http://localhost:$HTTP_PORT/webui/app/$TOKEN/server#proxy-server-main"
 sleep 3
-/usr/bin/google-chrome-stable http://localhost:$HTTP_PORT/webui/app/$TOKEN/server#proxy-server-main & || /usr/bin/firefox http://localhost:$HTTP_PORT/webui/app/$TOKEN/server#proxy-server-main &
+/usr/bin/google-chrome-stable http://localhost:$HTTP_PORT/webui/app/$TOKEN/server#proxy-server-main || /usr/bin/firefox http://localhost:$HTTP_PORT/webui/app/$TOKEN/server#proxy-server-main &

@@ -1,4 +1,4 @@
-app: acestream-"$APPVERSION"
+app: acestream-$APPVERSION
 ingredients:
   dist: stretch
   sources:
@@ -14,22 +14,22 @@ ingredients:
 
   script:
     - curl --silent http://acestream.org/downloads/linux/acestream_"$APPVERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip
-    - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-"$APPVERSION".png
+    - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-$APPVERSION.png
     - whereis python
 
 script:
   - touch acestream-"$APPVERSION".desktop
-  - sed -i -e "s/\/usr\/bin\/acestream-$APPVERSION/AppRun --client-console/g" acestream-"$APPVERSION".desktop
+  - sed -i -e "s/\/usr\/bin\/acestream-$APPVERSION/AppRun/g" acestream-"$APPVERSION".desktop
   - mkdir -p opt/acestream
   - cp -rf ../{acestream.conf,acestreamengine,start-engine,data,lib} opt/acestream
-  - cp ../acestream-"$APPVERSION".png usr/share/icons/hicolor/acestream-"$APPVERSION".png
+  - cp ../acestream-$APPVERSION.png usr/share/icons/hicolor/acestream-$APPVERSION.png
   - cp -rf usr/lib/python2.7/lib-dynload/* usr/lib/python2.7/
-  - cat > acestream-"$APPVERSION".desktop <<EOF
+  - cat > acestream-$APPVERSION.desktop <<EOF
   - [Desktop Entry]
   - Type=Application
-  - Name=AceStream-"$APPVERSION"
-  - Icon=/usr/share/icons/hicolor/acestream-"$APPVERSION".png
-  - Exec=/usr/bin/acestream-"$APPVERSION" --client-console
+  - Name=AceStream-$APPVERSION
+  - Icon=/usr/share/icons/hicolor/acestream-$APPVERSION.png
+  - Exec=/usr/bin/acestream-$APPVERSION
   - Categories=GNOME;GTK;Network;
   - StartupNotify=true
   - EOF

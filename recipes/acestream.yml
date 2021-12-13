@@ -13,7 +13,7 @@ ingredients:
     - python-pkg-resources
 
   script:
-    - curl --silent http://acestream.org/downloads/linux/acestream_$APPVERSION_debian_9.9_x86_64.tar.gz | tar --extract --gzip
+    - curl --silent http://acestream.org/downloads/linux/acestream_"$APPVERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip
     - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-$APPVERSION.png
     - whereis python
 

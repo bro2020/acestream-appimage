@@ -23,7 +23,7 @@ docker rmi debian:9-slim && \
 sudo mv "${HER}"/Build/$ACE_VERSION/acestream-appimage/out/* "${HER}"/Build/$ACE_VERSION/AceStream-"$ACE_VERSION".AppImage && \
 sudo rm -rf "${HER}"/Build/$ACE_VERSION/acestream-appimage/ && \
 sudo chown -R $USER:$USER "${HER}"/Build/$ACE_VERSION/ && \
-echo "### Build Completed! AppImage file in directory Build/\"$ACE_VERSION\" ###" && \
+echo "### Build Completed! AppImage file in directory Build/\"$ACE_VERSION\"/AceStream-\"$ACE_VERSION\".AppImage ###" && \
 exit 0 || docker rm builder-appimage; \
 docker rmi debian:9-slim; sudo rm -rf "${HER}"/Build/; echo '### Error! Canceled! ###'; exit 1
 fi

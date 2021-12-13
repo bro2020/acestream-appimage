@@ -18,6 +18,7 @@ ingredients:
 
 script:
   - touch acestream-$ACE_VERSION.desktop
+  - touch acestream-out-$ACE_VERSION.desktop
   - sed -i -e "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
   - mkdir -p opt/acestream
   - cp -rf ../{acestream.conf,acestreamengine,start-engine,data,lib} opt/acestream
@@ -39,10 +40,11 @@ script:
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
-  - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-\"$ACE_VERSION\".png /home/\"$USER\"/.local/share/icons/
-  - cp -rf acestream-\"$ACE_VERSION\".desktop /home/\"$USER\"/.local/share/applications/
-  - sed -i -e "s/\/usr\/bin\/acestream-\"$ACE_VERSION\"/$HERE\/AppImage-\"$ACE_VERSION\".AppImage/g" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
-  - sed -i -e "s/\/usr\/share\/icons\/hicolor\/acestream-\"$ACE_VERSION\".png//home\/\"$USER\"\/.local\/share\/icons\/acestream-\"$ACE_VERSION\".png/g" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
+  - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
+  - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
+  - cp -rf acestream-out-$ACE_VERSION.desktop /home/$USER/.local/share/applications/
+  - sed -i -e "s/\/usr\/bin\/acestream-$ACE_VERSION/$HERE\/AppImage-$ACE_VERSION.AppImage/g" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
+  - sed -i -e "s/\/usr\/share\/icons\/hicolor\/acestream-$ACE_VERSION.png/\/home\/$USER\/.local\/share\/icons\/acestream-$ACE_VERSION.png/g" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
   - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@"
   - EOF
   - chmod a+x ./AppRun

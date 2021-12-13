@@ -8,7 +8,7 @@ apt-get install git fuse curl wget file binutils glib-2.0.0 -y && \
 cd opt/ && \
 git clone https://github.com/bro2020/acestream-appimage.git && \
 cd acestream-appimage/ && \
-ACE_VERSION=\"$ACE_VERSION\" ./pkg2appimage.appimage recipes/acestream.yml"
+ACE_VERSION=\"$ACE_VERSION\" USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
 if [ -z "$WD" ];
 then 
 echo '### Docker not installed! Canceled ###'
@@ -17,7 +17,7 @@ else
 echo ' ### Docker installed, startind make build... ###'
 mkdir -p "${HER}"/Build/$ACE_VERSION && \
 rm -rf "${HER}"/Build/$ACE_VERSION/* && \
-docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION --privileged -v "${HER}"/Build/$ACE_VERSION:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
+docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER --privileged -v "${HER}"/Build/$ACE_VERSION:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 sudo mv "${HER}"/Build/$ACE_VERSION/acestream-appimage/out/* "${HER}"/Build/$ACE_VERSION/AceStream-"$ACE_VERSION".AppImage && \

@@ -21,7 +21,8 @@ docker run -i --name builder-appimage -e APPVERSION="$APPVERSION" --privileged -
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 sudo mv "${HER}"/Build/"$APPVERSION"/acestream-appimage/out/* "${HER}"/Build/"$APPVERSION" && \
-sudo rm -rf "${HER}"/Build/"$APPVERSION"/acestream-appimage/ ; \
-sudo chown -R $USER:$USER "${HER}"/Build/"$APPVERSION"/ ; \
-echo "### Build Completed! AppImage file in directory \"Build/$APPVERSION\" ###"
+sudo rm -rf "${HER}"/Build/"$APPVERSION"/acestream-appimage/ && \
+sudo chown -R $USER:$USER "${HER}"/Build/"$APPVERSION"/ && \
+echo "### Build Completed! AppImage file in directory \"Build/$APPVERSION\" ###" || \
+echo 'Error! Canceled'; docker rm builder-appimage; docker rmi debian:9-slim; sudo rm -rf "${HER}"/Build/"$APPVERSION"
 fi

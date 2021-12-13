@@ -15,14 +15,15 @@ echo '### Docker not installed! Canceled ###'
 exit 1
 else
 echo ' ### Docker installed, startind make build... ###'
-mkdir -p "${HER}"/Build/"$APPVERSION" && \
-rm -rf "${HER}"/Build/"$APPVERSION"/* && \
-docker run -i --name builder-appimage -e APPVERSION="$APPVERSION" --privileged -v "${HER}"/Build/"$APPVERSION":/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
+mkdir -p "${HER}"/Build/$APPVERSION && \
+rm -rf "${HER}"/Build/$APPVERSION/* && \
+docker run -i --name builder-appimage -e APPVERSION=$APPVERSION --privileged -v "${HER}"/Build/$APPVERSION:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
-sudo mv "${HER}"/Build/"$APPVERSION"/acestream-appimage/out/* "${HER}"/Build/"$APPVERSION" && \
-sudo rm -rf "${HER}"/Build/"$APPVERSION"/acestream-appimage/ && \
-sudo chown -R $USER:$USER "${HER}"/Build/"$APPVERSION"/ && \
-echo "### Build Completed! AppImage file in directory \"Build/$APPVERSION\" ###" || \
-docker rm builder-appimage; docker rmi debian:9-slim; sudo rm -rf "${HER}"/Build/; echo '### Error! Canceled! ###'
+sudo mv "${HER}"/Build/$APPVERSION/acestream-appimage/out/* "${HER}"/Build/$APPVERSION && \
+sudo rm -rf "${HER}"/Build/$APPVERSION/acestream-appimage/ && \
+sudo chown -R $USER:$USER "${HER}"/Build/$APPVERSION/ && \
+echo "### Build Completed! AppImage file in directory Build/\"$APPVERSION\" ###"
+# || \
+#docker rm builder-appimage; docker rmi debian:9-slim; sudo rm -rf "${HER}"/Build/; echo '### Error! Canceled! ###'
 fi

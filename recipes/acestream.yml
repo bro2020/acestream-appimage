@@ -40,7 +40,7 @@ script:
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
-  - "${ROOT}"/acestreamengine --lib-path "$ROOT" "$@"
+  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@"
   - EOF
   - chmod a+x ./AppRun
   - echo $ACE_VERSION > ../VERSION

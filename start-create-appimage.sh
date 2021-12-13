@@ -20,7 +20,7 @@ rm -rf "${HER}"/Build/$ACE_VERSION/* && \
 docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION --privileged -v "${HER}"/Build/$ACE_VERSION:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
-sudo mv "${HER}"/Build/$ACE_VERSION/acestream-appimage/out/* "${HER}"/Build/$ACE_VERSION && \
+sudo mv "${HER}"/Build/$ACE_VERSION/acestream-appimage/out/* "${HER}"/Build/$ACE_VERSION/AceStream-"$ACE_VERSION".AppImage && \
 sudo rm -rf "${HER}"/Build/$ACE_VERSION/acestream-appimage/ && \
 sudo chown -R $USER:$USER "${HER}"/Build/$ACE_VERSION/ && \
 echo "### Build Completed! AppImage file in directory Build/\"$ACE_VERSION\" ###" && \

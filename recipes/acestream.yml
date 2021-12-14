@@ -11,9 +11,7 @@ ingredients:
     - python-lxml
     - python-m2crypto
     - python-pkg-resources
-	- gtk2-engines
-	- gtk2-engines-cleanice
-	- gtk2-engines-murrine
+	- python-gtk2
 
   script:
     - curl --silent http://acestream.org/downloads/linux/acestream_"$ACE_VERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip

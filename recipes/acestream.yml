@@ -44,7 +44,7 @@ script:
   - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/
   - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
-  - sed -i -e "4 Exec=$HERE/AppImage-$ACE_VERSION.AppImage\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
+  - sed -i -e "4\ Exec=$HERE/AppImage-$ACE_VERSION.AppImage\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
 #  - sed -i -e "5 Icon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
   - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@"
   - EOF

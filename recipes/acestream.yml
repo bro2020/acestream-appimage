@@ -44,7 +44,7 @@ script:
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/
   - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
   - sed -i -e "3a\Exec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
-  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/engine.conf "$@"
+  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@" @$CONF_PATH/acestream.conf
   - EOF
   - chmod a+x ./AppRun
   - echo $ACE_VERSION > ../VERSION

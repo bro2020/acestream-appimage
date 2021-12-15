@@ -2,7 +2,7 @@
 USER=$USER
 HER=$(dirname $(readlink -f "${0}"))
 WD=$(whereis docker)
-ACE_VERSION=`cat VERSION`
+ACE_VERSION=`cat $HER/VERSION`
 COMMAND="apt-get update && \
 apt-get install git fuse curl wget file binutils glib-2.0.0 -y && \
 cd opt/ && \
@@ -21,6 +21,7 @@ docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER 
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 sudo mv "${HER}"/Build/$ACE_VERSION/acestream-appimage/out/* "${HER}"/Build/$ACE_VERSION/AceStream-"$ACE_VERSION".AppImage && \
+cp "${HER}"/acestream.conf "${HER}"/Build/$ACE_VERSION/ && \
 sudo rm -rf "${HER}"/Build/$ACE_VERSION/acestream-appimage/ && \
 sudo chown -R $USER:$USER "${HER}"/Build/$ACE_VERSION/ && \
 echo "### Build Completed! AppImage file in directory Build/$ACE_VERSION/AceStream-$ACE_VERSION.AppImage ###" && \

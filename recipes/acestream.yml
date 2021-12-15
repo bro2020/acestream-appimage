@@ -19,7 +19,7 @@ ingredients:
 
 script:
   - touch acestream-$ACE_VERSION.desktop
-  - sed -i -e "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
+  - sed -i "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
   - mkdir -p opt/acestream
   - cp -rf ../{acestream.conf,acestreamengine,start-engine,data,lib} opt/acestream
   - cp ../acestream-$ACE_VERSION.png usr/share/icons/hicolor/acestream-$ACE_VERSION.png

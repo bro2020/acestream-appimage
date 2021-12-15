@@ -38,7 +38,7 @@ script:
   - CONF_PATH="$(dirname $APPIMAGE)"
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7" /usr/bin/pkill --signal SIGHUP acestreamengine
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
-  - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
+  - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":/usr/bin/:"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
   - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop

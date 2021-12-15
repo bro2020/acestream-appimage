@@ -31,29 +31,22 @@ script:
   - Categories=GNOME;GTK;Network;
   - StartupNotify=true
   - EOF
-  - cat > acestream-stop-$ACE_VERSION.desktop <<EOF
-  - [Desktop Entry]
-  - Type=Application
-  - Name=AceStream-$ACE_VERSION
-  - Icon=/usr/share/icons/hicolor/acestream-$ACE_VERSION.png
-  - Exec=/usr/bin/pkill --signal SIGHUP acestreamengine
-  - Categories=GNOME;GTK;Network;
-  - StartupNotify=true
-  - EOF
   - cat > ./AppRun <<\EOF
   - #!/bin/sh
   - HERE=$(dirname $(readlink -f "${0}"))
   - ROOT="${HERE}"/opt/acestream
   - CONF_PATH="$(dirname $APPIMAGE)"
-  - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7" /usr/bin/pkill --signal SIGHUP acestreamengine
+  - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":/usr/bin/:"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
   - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
-  - cp -rf "$HERE"/acestream-stop-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
+  - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i "3a\Exec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - sed -i "3a\Exec=/usr/bin/pkill --signal SIGHUP acestreamengine\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/acestream.conf "$@"
   - EOF
   - chmod a+x ./AppRun

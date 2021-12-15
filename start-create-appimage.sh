@@ -2,8 +2,10 @@
 USER=$USER
 HER=$(dirname $(readlink -f "${0}"))
 WD=$(whereis docker)
-ACE_VERSION=`cat $HER/VERSION`
+VER=`cat $HER/VERSION`
+ACE_VERSION=`cat $HER/ACE_VERSION`
 BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
+BUILD=${ACE_VERSION}${BUILD_TIME}_${VER}
 COMMAND="apt-get update && \
 apt-get install git fuse curl wget file binutils glib-2.0.0 -y && \
 cd opt/ && \
@@ -32,13 +34,13 @@ echo '
 sleep 3
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 ACE_VERSION=$ACE_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
-mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
-mv "${HER}"/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
-chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
+mkdir -p "${HER}"/build/$BUILD && \
+mv "${HER}"/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
+chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
-echo "${ACE_VERSION}${BUILD_TIME}" > "${HER}"/CURRENT_BUILD && \
+echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
 echo "
-### Создание билда успешно завершено! Путь к AppImage файлу: ./build/${ACE_VERSION}${BUILD_TIME}/AceStream-$ACE_VERSION.AppImage ###
+### Создание билда успешно завершено! Путь к AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
 " && \
 exit 0 || rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out; echo '
 ### Произошла критическая ошибка! ###
@@ -52,13 +54,13 @@ rm -rf "${HER}"/tmp/* && \
 docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER --privileged -v "${HER}"/tmp:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
 docker rm builder-appimage && \
 docker rmi debian:9-slim && \
-mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
-sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
+mkdir -p "${HER}"/build/$BUILD && \
+sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
 sudo rm -rf "${HER}"/tmp && \
-sudo chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
-echo "${ACE_VERSION}${BUILD_TIME}" > "${HER}"/CURRENT_BUILD && \
+sudo chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
+echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
 echo "
-### Создание билда успешно завершено! Путь к AppImage файлу: ./build/${ACE_VERSION}${BUILD_TIME}/AceStream-$ACE_VERSION.AppImage ###
+### Создание билда успешно завершено! Путь к AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
 " && \
 exit 0 || docker rm builder-appimage; \
 docker rmi debian:9-slim; sudo rm -rf "${HER}"/tmp; echo '

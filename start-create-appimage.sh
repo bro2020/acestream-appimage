@@ -34,7 +34,6 @@ rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 ACE_VERSION=$ACE_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
 mv "${HER}"/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
 mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
-cp "${HER}"/acestream.conf "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/ && \
 chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 echo "
@@ -54,7 +53,6 @@ docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
 sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
-cp "${HER}"/acestream.conf "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/ && \
 sudo rm -rf "${HER}"/tmp && \
 sudo chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
 echo "

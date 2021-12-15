@@ -1,7 +1,7 @@
 #!/bin/bash
 USER=$USER
 HER=$(dirname $(readlink -f "${0}"))
-ACE_VERSION=`cat VERSION`
+ACE_VERSION=`cat $HER/VERSION`
 TOKEN=mytoken
 PORT=6701
 HTTP_PORT=6878

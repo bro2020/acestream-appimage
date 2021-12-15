@@ -36,14 +36,16 @@ script:
   - HERE=$(dirname $(readlink -f "${0}"))
   - ROOT="${HERE}"/opt/acestream
   - CONF_PATH="$(dirname $APPIMAGE)"
-  - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
+  - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7" /usr/bin/pkill --signal SIGHUP acestreamengine
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
   - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
-  - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/
-  - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
-  - sed -i -e "3a\Exec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
+  - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
+  - sed -i -e "3a\Exec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - sed -i -e "3a\/usr/bin/pkill --signal SIGHUP acestreamengine\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/acestream.conf "$@"
   - EOF
   - chmod a+x ./AppRun

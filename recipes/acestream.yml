@@ -35,7 +35,7 @@ script:
   - #!/bin/sh
   - HERE=$(dirname $(readlink -f "${0}"))
   - ROOT="${HERE}"/opt/acestream
-  - CONF_PATH="$(readlink $APPIMAGE)"
+  - CONF_PATH="$(dirname $APPIMAGE)"
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"

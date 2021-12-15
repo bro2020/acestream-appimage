@@ -10,7 +10,7 @@ cd opt/ && \
 git clone https://github.com/bro2020/acestream-appimage.git && \
 cd acestream-appimage/ && \
 ACE_VERSION=\"$ACE_VERSION\" USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
-if [ "$@" = "-h" ] || [ "$@" = "--help" ];
+if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]];
 then
 echo '
 Запуск скрипта без ключей подразумевает проверку наличия в системе docker и запуск создания билда в контейнере
@@ -20,7 +20,7 @@ echo '
 '
 exit 0
 fi
-if [ "$@" = -t ];
+if [[ "$@" = "-t" ]];
 then
 WD=''
 fi

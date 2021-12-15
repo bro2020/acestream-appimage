@@ -14,10 +14,11 @@ ingredients:
   script:
     - curl --silent http://acestream.org/downloads/linux/acestream_"$ACE_VERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip
     - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-$ACE_VERSION.png
+    - whereis python
 
 script:
   - touch acestream-$ACE_VERSION.desktop
-  - sed -i -e "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
+  - sed -i "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
   - mkdir -p opt/acestream
   - cp -rf ../{acestream.conf,acestreamengine,start-engine,data,lib} opt/acestream
   - cp ../acestream-$ACE_VERSION.png usr/share/icons/hicolor/acestream-$ACE_VERSION.png
@@ -38,6 +39,7 @@ script:
   - CONF_PATH="$(dirname $APPIMAGE)"
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
+<<<<<<< HEAD
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":/usr/bin/:"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
   - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
@@ -48,6 +50,10 @@ script:
   - sed -i "2a\Name=Start AceStream-$ACE_VERSION\nExec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - sed -i "2a\Name=Stop AceStream-$ACE_VERSION\nExec=/usr/bin/pkill --signal SIGHUP acestreamengine\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/acestream.conf "$@"
+=======
+  - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
+  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@"
+>>>>>>> origin/master
   - EOF
   - chmod a+x ./AppRun
   - echo $ACE_VERSION > ../VERSION

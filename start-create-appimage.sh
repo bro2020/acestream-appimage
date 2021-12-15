@@ -62,7 +62,6 @@ docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 mkdir -p "${HER}"/build/$BUILD && \
 sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
-
 sed -i "s/USER/$USER/g" "${HER}"/acestream.conf
 cp "${HER}"/acestream.conf "${HER}"/build/$BUILD/ && \
 sudo rm -rf "${HER}"/tmp && \

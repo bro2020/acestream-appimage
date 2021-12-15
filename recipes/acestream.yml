@@ -11,8 +11,9 @@ ingredients:
     - python-lxml
     - python-m2crypto
     - python-pkg-resources
+	- python-setuptools
 	- python-gtk2
-	- libappindicator-gtk2
+	- python-appindicator
   script:
     - curl --silent http://acestream.org/downloads/linux/acestream_"$ACE_VERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip
     - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-$ACE_VERSION.png

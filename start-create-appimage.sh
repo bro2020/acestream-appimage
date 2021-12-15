@@ -36,9 +36,11 @@ echo "
 "
 sleep 3
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
-ACE_VERSION=$ACE_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
+ACE_VERSION=$ACE_VERSION USER=$USER ./pkg2appimage.appimage recipes/acestream.yml && \
 mkdir -p "${HER}"/build/$BUILD && \
 mv "${HER}"/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
+sed -i "s/USER/$USER/g" "${HER}"/acestream.conf
+cp "${HER}"/acestream.conf "${HER}"/build/$BUILD/ && \
 chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
@@ -60,6 +62,9 @@ docker rm builder-appimage && \
 docker rmi debian:9-slim && \
 mkdir -p "${HER}"/build/$BUILD && \
 sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
+
+sed -i "s/USER/$USER/g" "${HER}"/acestream.conf
+cp "${HER}"/acestream.conf "${HER}"/build/$BUILD/ && \
 sudo rm -rf "${HER}"/tmp && \
 sudo chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
 echo "$BUILD" > "${HER}"/CURRENT_BUILD && \

@@ -32,10 +32,11 @@ echo '
 sleep 3
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 ACE_VERSION=$ACE_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
-mv "${HER}"/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
 mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
+mv "${HER}"/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
 chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
+echo "${ACE_VERSION}${BUILD_TIME}" > "${HER}"/CURRENT_BUILD && \
 echo "
 ### Создание билда успешно завершено! Путь к AppImage файлу: ./build/${ACE_VERSION}${BUILD_TIME}/AceStream-$ACE_VERSION.AppImage ###
 " && \
@@ -55,6 +56,7 @@ mkdir -p "${HER}"/build/${ACE_VERSION}${BUILD_TIME} && \
 sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/AceStream-"$ACE_VERSION".AppImage && \
 sudo rm -rf "${HER}"/tmp && \
 sudo chown -R $USER:$USER "${HER}"/build/${ACE_VERSION}${BUILD_TIME}/* && \
+echo "${ACE_VERSION}${BUILD_TIME}" > "${HER}"/CURRENT_BUILD && \
 echo "
 ### Создание билда успешно завершено! Путь к AppImage файлу: ./build/${ACE_VERSION}${BUILD_TIME}/AceStream-$ACE_VERSION.AppImage ###
 " && \

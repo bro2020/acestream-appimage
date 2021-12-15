@@ -14,12 +14,14 @@ cd acestream-appimage/ && \
 ACE_VERSION=\"$ACE_VERSION\" USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]];
 then
-echo '
+echo "
+Версия: $VER
+
 Запуск скрипта без ключей подразумевает проверку наличия в системе docker и запуск создания билда в контейнере
     -t            - выполняет принудительный запуск билда без докера в текущем окне терминала
     -h --help     - выводит эту подсказку
 В случае не обнаружения в системе docker выполняется запуск билда без докера в текущем окне терминала
-'
+"
 exit 0
 fi
 if [[ "$@" = "-t" ]];
@@ -28,9 +30,10 @@ WD=''
 fi
 if [ -z "$WD" ];
 then 
-echo '
+echo "
+### Версия: $VER ###
 ### Docker не обнаружен! Пробую запустить создание билда в текущей ОС ###
-'
+"
 sleep 3
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 ACE_VERSION=$ACE_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
@@ -46,9 +49,10 @@ exit 0 || rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out; echo '
 ### Произошла критическая ошибка! ###
 '; exit 1
 else
-echo '
+echo "
+### Версия: $VER ###
 ### Docker обнаружен! Запуск создания билда в docker контейнере debian:9-slim... ###
-'
+"
 mkdir -p "${HER}"/tmp && \
 rm -rf "${HER}"/tmp/* && \
 docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER --privileged -v "${HER}"/tmp:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \

@@ -3,8 +3,6 @@ ingredients:
   dist: stretch
   sources:
     - deb http://deb.debian.org/debian stretch main
-#	- deb http://security.debian.org/debian-security stretch/updates main
-#	- deb http://deb.debian.org/debian stretch-updates main
   packages:
     - curl
     - libpython2.7
@@ -13,9 +11,6 @@ ingredients:
     - python-lxml
     - python-m2crypto
     - python-pkg-resources
-    - python-setuptools
-    - python-gtk2
-    - python-appindicator
   script:
     - curl --silent http://acestream.org/downloads/linux/acestream_"$ACE_VERSION"_debian_9.9_x86_64.tar.gz | tar --extract --gzip
     - curl https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -L -o acestream-$ACE_VERSION.png
@@ -40,6 +35,7 @@ script:
   - #!/bin/sh
   - HERE=$(dirname $(readlink -f "${0}"))
   - ROOT="${HERE}"/opt/acestream
+  - CONF_PATH="$(readlink $APPIMAGE)"
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/lib/x86_64-linux-gnu":"$HERE/usr/lib/python2.7"
   - export PYTHONHOME="$HERE/usr":$PYTHONHOME
   - export PATH="$HERE/bin":"$HERE/sbin":"$HERE/usr/bin":"$HERE/usr/sbin":"$PATH"
@@ -48,7 +44,7 @@ script:
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/
   - sed -i '4,5d' /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
   - sed -i -e "3a\Exec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-$ACE_VERSION.desktop
-  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" "$@"
+  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/engine.conf "$@"
   - EOF
   - chmod a+x ./AppRun
   - echo $ACE_VERSION > ../VERSION

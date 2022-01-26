@@ -48,7 +48,11 @@ script:
   - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i "2a\Name=Start AceStream-$ACE_VERSION\nExec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - sed -i "2a\Name=Stop AceStream-$ACE_VERSION\nExec=/usr/bin/pkill --signal SIGHUP acestreamengine\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
-  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" @$CONF_PATH/acestream.conf "$@"
+  - ACECON=''
+  - if [ -f $CONF_PATH/acestream.conf ]; then
+  - ACECON="@$CONF_PATH/acestream.conf"
+  - fi
+  - "${ROOT}"/acestreamengine --lib-path "${ROOT}" $ACECON "$@"
   - EOF
   - chmod a+x ./AppRun
   - echo $ACE_VERSION > ../VERSION

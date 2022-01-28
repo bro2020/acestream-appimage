@@ -39,10 +39,10 @@ docker имеджа debian:9-slim, билдит AppImage файл содержа
 ```
   ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage
 ```
-*$BUILD - поддирекотрия с номер билда (генерируется при выполнении скрипта `start-create-appimage.sh`)
-$ACE_VERSION-$VER - версия сервера acestream и версия данного проекта*
+*$BUILD* - поддиректория с номером билда (генерируется при выполнении скрипта `start-create-appimage.sh`)
+*$ACE_VERSION-$VER* - версия сервера acestream и версия данного проекта
     
-Можно применять пользовательские ключи запуская бинарник AppImage. Они будуту переопределять параметры прописанные в конфигурационном файле `./build/$BUILD/acestream.conf` (кроме параметра `--client-console`).
+Можно применять пользовательские ключи запуская бинарник AppImage. Они будуту переопределять параметры прописанные в конфигурационном файле *./build/$BUILD/acestream.conf* (кроме параметра *--client-console*).
 
 Сразу после запуска бинарника, происходит автомастическая интеграция приложения с системой:
   - создается файл иконки `/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png`
@@ -50,6 +50,12 @@ $ACE_VERSION-$VER - версия сервера acestream и версия дан
   - создается файл остановки сервера `/home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop`
 
 После этого сервер AceStream имеет значки запуска и останоки в меню приложений вашего дестрибутива Linux.
+
+Веб интерфейс сервера доступен по адресу:
+```
+http://localhost:(--http-port)/webui/app/(--access-token)/server#proxy-server-main
+```
+*--http-port* и *--access-token* задаются или в терминале ключем запуска, или в конфигурационном файле *acestream.conf*
 
 Для того, чтобы выпилить приложение из системы достаточно выполнить комманду:
 ```

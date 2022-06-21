@@ -15,12 +15,12 @@ ACE_VERSION=\"$ACE_VERSION\" USER=$USER ./pkg2appimage.appimage recipes/acestrea
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]];
 then
 echo "
-Версия: $VER
+Версія: $VER
 
-Запуск скрипта без ключей подразумевает проверку наличия в системе docker и запуск создания билда в контейнере
-    -t            - выполняет принудительный запуск билда без докера в текущем окне терминала
-    -h --help     - выводит эту подсказку
-В случае не обнаружения в системе docker выполняется запуск билда без докера в текущем окне терминала
+Запуск скрипту без ключа передбачає перевірку наявності в системі встановленого docker і запуск створення AppImage файлу в контейнері
+    -t            - виконує примусовий запуск білда без докера, в поточному вікні терміналу
+    -h --help     - виводить цю підказку
+У разі неможливості виявлення в системі встановленого docker, виконується запуск білда без використання докера, в поточному вікні терміналу.
 "
 exit 0
 fi
@@ -31,8 +31,8 @@ fi
 if [ -z "$WD" ];
 then 
 echo "
-### Версия: $VER ###
-### Docker не обнаружен! Пробую запустить создание билда в текущей ОС ###
+### Версія: $VER ###
+### Docker не виявлено! Пробую запустити створення білда в поточній ОС ###
 "
 sleep 3
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
@@ -45,15 +45,15 @@ chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
 rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
 echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
 echo "
-### Создание билда успешно завершено! Путь к AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
 " && \
 exit 0 || rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out; echo '
-### Произошла критическая ошибка! ###
+### Виникла критична помилка! ###
 '; exit 1
 else
 echo "
-### Версия: $VER ###
-### Docker обнаружен! Запуск создания билда в docker контейнере debian:9-slim... ###
+### Версія: $VER ###
+### Docker виявлено! Запуск створення білда в docker контейнері debian:9-slim... ###
 "
 mkdir -p "${HER}"/tmp && \
 rm -rf "${HER}"/tmp/* && \
@@ -68,10 +68,10 @@ sudo rm -rf "${HER}"/tmp && \
 sudo chown -R $USER:$USER "${HER}"/build/$BUILD/* && \
 echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
 echo "
-### Создание билда успешно завершено! Путь к AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
 " && \
 exit 0 || docker rm builder-appimage; \
 docker rmi debian:9-slim; sudo rm -rf "${HER}"/tmp; echo '
-### Произошла критическая ошибка! ###
+### Виникла критична помилка! ###
 '; exit 1
 fi

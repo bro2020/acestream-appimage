@@ -1,5 +1,6 @@
 #!/bin/bash
 USER=$USER
+REPO=bro2020
 HER=$(dirname $(readlink -f "${0}"))
 WD=$(whereis docker)
 VER=`cat $HER/VERSION`
@@ -7,9 +8,9 @@ ACE_VERSION=`cat $HER/ACE_VERSION`
 BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
 BUILD=${ACE_VERSION}${BUILD_TIME}_${VER}
 COMMAND="apt-get update && \
-apt-get install git fuse curl wget file binutils glib-2.0.0 -y && \
+apt-get install git fuse curl wget file binutils libglib2.0-0 -y && \
 cd opt/ && \
-git clone https://github.com/bro2020/acestream-appimage.git && \
+git clone https://github.com/${REPO}/acestream-appimage.git && \
 cd acestream-appimage/ && \
 ACE_VERSION=\"$ACE_VERSION\" USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]];
@@ -53,13 +54,13 @@ exit 0 || rm -rf "${HER}"/acestream-$ACE_VERSION "${HER}"/out; echo '
 else
 echo "
 ### Версія: $VER ###
-### Docker виявлено! Запуск створення білда в docker контейнері debian:9-slim... ###
+### Docker виявлено! Запуск створення білда в docker контейнері debian:10-slim... ###
 "
 mkdir -p "${HER}"/tmp && \
 rm -rf "${HER}"/tmp/* && \
-docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER --privileged -v "${HER}"/tmp:/opt/ debian:9-slim /bin/bash -c "$COMMAND" && \
+docker run -i --name builder-appimage -e ACE_VERSION=$ACE_VERSION -e USER=$USER --privileged -v "${HER}"/tmp:/opt/ debian:10-slim /bin/bash -c "$COMMAND" && \
 docker rm builder-appimage && \
-docker rmi debian:9-slim && \
+docker rmi debian:10-slim && \
 mkdir -p "${HER}"/build/$BUILD && \
 sudo mv "${HER}"/tmp/acestream-appimage/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
 sed -i "s/USER/$USER/g" "${HER}"/acestream.conf
@@ -70,8 +71,9 @@ echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
 echo "
 ### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
 " && \
-exit 0 || docker rm builder-appimage; \
-docker rmi debian:9-slim; sudo rm -rf "${HER}"/tmp; echo '
+exit 0 || \
+docker rm builder-appimage && \
+sudo rm -rf "${HER}"/tmp; echo '
 ### Виникла критична помилка! ###
 '; exit 1
 fi

@@ -6,8 +6,8 @@ VER=$(cat "$HER"/VERSION)
 ACE_VERSION=$(cat "$HER"/ACE_VERSION)
 BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
 BUILD=${ACE_VERSION}${BUILD_TIME}_${VER}
-COMMAND="apt-get update && \
-apt-get install fuse curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat -y && \
+COMMAND="apt update && \
+apt install -y fuse gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat && \
 cd opt/ && \
 ACE_VERSION=$ACE_VERSION USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]]; then
@@ -51,7 +51,7 @@ if [ -z "$WD" ]; then
 else
   echo "
 ### Версія: $VER ###
-### Docker виявлено! Запуск створення білда в docker контейнері debian:10-slim... ###
+### Docker виявлено! Запуск створення білда в docker контейнері debian:12-slim... ###
   "
   sudo rm -vrf /tmp/builder-appimage/* && \
   mkdir -vp /tmp/builder-appimage && \
@@ -63,23 +63,23 @@ else
    -v /tmp/builder-appimage:/opt \
    -v ./pkg2appimage.appimage:/opt/pkg2appimage.appimage \
    -v ./recipes:/opt/recipes \
-   debian:10-slim /bin/bash -c "$COMMAND" && \
+   debian:12-slim /bin/bash -c "$COMMAND" && \
   set +x
   sleep 1
-  docker rmi debian:10-slim || \
-  echo "Docker image 'debian:10-slim' not removed!" && \
+  docker rmi debian:12-slim || \
+  echo "Docker image 'debian:12-slim' not removed!" && \
   mkdir -vp "${HER}"/build/$BUILD && \
   sudo mv -v /tmp/builder-appimage/out/* "${HER}"/build/$BUILD/AceStream-"$ACE_VERSION"-$VER.AppImage && \
   cp -v "${HER}"/acestream.conf "${HER}"/build/$BUILD/ && \
   sed -i "s/\$USER/$USER/g" "${HER}"/build/$BUILD/acestream.conf && \
-  sudo rm -vrf /tmp/builder-appimage && \
+  sudo rm -rf /tmp/builder-appimage && \
   sudo chown -vR $USER:$USER "${HER}"/build/$BUILD/* && \
   echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
   echo "
 ### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
   " && \
   exit 0 || \
-  sudo rm -vrf /tmp/builder-appimage; \
+  sudo rm -rf /tmp/builder-appimage; \
   echo '
 ### Виникла критична помилка! ###
   '; \

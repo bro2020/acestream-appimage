@@ -11,6 +11,7 @@ ingredients:
     - python-lxml
     - python-m2crypto
     - python-pkg-resources
+    - python-requests
   script:
     - curl -ksL https://download.acestream.media/linux/acestream_3.1.74_debian_10.5_x86_64.tar.gz | tar -xz
     - curl -ksL https://iwf1.com/scrapekod/icons/script.module.torrent.ts.png -o acestream-$ACE_VERSION.png

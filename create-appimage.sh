@@ -41,8 +41,13 @@ if [ -n "$(echo "${@//' '/$'\n'}" | grep '^\-t$')" ]; then
 fi
 if [ -z "$WD" ]; then
   echo "
+### UA
 ### Версія: $VER ###
-### Docker не виявлено! Пробую запустити створення білда в поточній ОС ###
+### Docker не виявлено! Пробую запустити збірку в поточній ОС ###
+------
+### EN
+### Версія: $VER ###
+### Docker not detected! Trying to run build on current OS ###
   "
   sleep 3
   rm -vrf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
@@ -55,18 +60,31 @@ if [ -z "$WD" ]; then
   rm -vrf "${HER}"/acestream-$ACE_VERSION "${HER}"/out && \
   echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
   echo "
-### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+### UA
+### Збірка успішно завершена! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+------
+### EN
+### The build has been completed successfully! Path to the AppImage file: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
   " && \
   exit 0 || \
   rm -vrf "${HER}"/acestream-$ACE_VERSION "${HER}"/out; \
   echo '
+### UA
 ### Виникла критична помилка! ###
+------
+### EN
+### A fatal error occurred! ###
   '; \
   exit 1
 else
   echo "
+### UA
 ### Версія: $VER ###
-### Docker виявлено! Запуск створення білда в docker контейнері debian:12-slim... ###
+### Docker виявлено! Запуск збірки в docker контейнері debian:12-slim... ###
+------
+### EN
+### Version: $VER ###
+### Docker detected! Running build in docker container debian:12-slim... ###
   "
   sudo rm -vrf /tmp/builder-appimage/* && \
   mkdir -vp /tmp/builder-appimage && \
@@ -91,12 +109,20 @@ else
   sudo chown -vR $USER:$USER "${HER}"/build/$BUILD/* && \
   echo "$BUILD" > "${HER}"/CURRENT_BUILD && \
   echo "
-### Створення білда успішно завершено! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+### UA
+### Збірка успішно завершена! Шлях до AppImage файлу: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
+------
+### EN
+### The build has been completed successfully! Path to the AppImage file: ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage ###
   " && \
   exit 0 || \
   sudo rm -rf /tmp/builder-appimage; \
   echo '
+### UA
 ### Виникла критична помилка! ###
+------
+### EN
+### A fatal error occurred! ###
   '; \
   exit 1
 fi

@@ -6,22 +6,37 @@ VER=$(cat "$HER"/VERSION)
 ACE_VERSION=$(cat "$HER"/ACE_VERSION)
 BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
 BUILD=${ACE_VERSION}${BUILD_TIME}_${VER}
+INTEGRATION=''
+if [ -n "$(echo "${@//' '/$'\n'}" | grep '^\-i$')" ]; then
+  INTEGRATION='yes'
+fi
 COMMAND="apt update && \
 apt install -y fuse gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat && \
 cd opt/ && \
-ACE_VERSION=$ACE_VERSION USER=$USER ./pkg2appimage.appimage recipes/acestream.yml"
+ACE_VERSION=$ACE_VERSION USER=$USER INTEGRATION=$INTEGRATION ./pkg2appimage.appimage recipes/acestream.yml"
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]]; then
   echo "
+UA
 Версія: $VER
 
-Запуск скрипту без ключа передбачає перевірку наявності в системі встановленого docker і запуск створення AppImage файлу в контейнері
+Запуск скрипту без аргументів передбачає перевірку наявності в системі встановленого docker і запуск створення AppImage файлу в контейнері.
     -t            - виконує примусовий запуск білда без докера, в поточному вікні терміналу
+    -i            - включає в виконуваний файл AppRun інтеграцію з системою (.desktop файли та іконка)
     -h --help     - виводить цю підказку
-У разі неможливості виявлення в системі встановленого docker, виконується запуск білда без використання докера, в поточному вікні терміналу.
+У разі неможливості виявлення в системі встановленого docker, виконується запуск збірки без використання докера, в поточному вікні терміналу.
+-------------
+EN
+Version: $VER
+
+Running the script without arguments involves checking whether docker is installed on the system and starting the creation of the AppImage file in the container.
+    -t            - forces a build without docker, in the current terminal window
+    -i            - includes system integration (.desktop files and icon) in the AppRun executable file
+    -h --help     - displays this prompt
+If it is not possible to detect docker installed on the system, the build is launched without using docker, in the current terminal window.
   "
   exit 0
 fi
-if [[ "$@" = "-t" ]]; then
+if [ -n "$(echo "${@//' '/$'\n'}" | grep '^\-t$')" ]; then
   WD=''
 fi
 if [ -z "$WD" ]; then

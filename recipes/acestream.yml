@@ -32,38 +32,43 @@ ingredients:
 
 script:
   - touch acestream-$ACE_VERSION.desktop
-  - sed -i "s/\/usr\/bin\/acestream-$ACE_VERSION/AppRun/g" acestream-$ACE_VERSION.desktop
+  - sed -i "s#/usr/bin/acestream-$ACE_VERSION#AppRun#g" acestream-$ACE_VERSION.desktop
   - mkdir -p opt/acestream usr/local
   - cp -rf ../usr/local/* usr/local
   - cp -rf ../{acestream.conf,engine_version.json,acestreamengine,start-engine,data,lib} opt/acestream
-  - cp ../acestream-$ACE_VERSION.png usr/share/icons/hicolor/acestream-$ACE_VERSION.png
+  - cp ../acestream-$ACE_VERSION.png ./acestream-$ACE_VERSION.png
   - cat > acestream-$ACE_VERSION.desktop <<EOF
   - [Desktop Entry]
   - Type=Application
   - Name=AceStream-$ACE_VERSION
-  - Icon=/usr/share/icons/hicolor/acestream-$ACE_VERSION.png
-  - Exec=/usr/bin/acestream-$ACE_VERSION
+  - Icon=acestream-$ACE_VERSION.png
+  - Exec=/usr/local/bin/acestream-$ACE_VERSION
   - Categories=GNOME;GTK;Network;
   - StartupNotify=true
   - EOF
   - cat > ./AppRun <<\EOF
-  - #!/bin/sh
+  - #!/bin/bash
+  - ACECON=''
   - HERE=$(dirname $(readlink -f "${0}"))
-  - ROOT="${HERE}"/opt/acestream
+  - ROOT="${HERE}/opt/acestream"
   - CONF_PATH="$(dirname $APPIMAGE)"
   - export LD_LIBRARY_PATH="$ROOT/lib":"$HERE/usr/local/lib":"$HERE/usr/local/lib/python3.10":"$HERE/usr/lib/x86_64-linux-gnu":/usr/lib:/lib
   - export PYTHONHOME="$HERE/usr/local"
   - export PYTHONPATH="$HERE/usr/local/lib/python310.zip":"$HERE/usr/local/lib/python3.10":"$HERE/usr/local/lib/python3.10/lib-dynload":"$HERE/usr/local/lib/python3.10/site-packages"
   - export PATH="$HERE/usr/local/bin":"$HERE/usr/bin":"$HERE/bin":"$HERE/sbin":"$HERE/usr/sbin":"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
-  - cp -rf "$HERE"/usr/share/icons/hicolor/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
+  - if [ "$INTEGRATION" = 'yes' ]; then
+  - cp -rf "$HERE"/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
   - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i '3,5d' /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i "2a\Name=Start AceStream-$ACE_VERSION\nExec=$APPIMAGE\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - sed -i "2a\Name=Stop AceStream-$ACE_VERSION\nExec=/usr/bin/pkill --signal SIGHUP acestreamengine\nIcon=/home/$USER/.local/share/icons/acestream-$ACE_VERSION.png" /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
-  - ACECON=''
+  - fi
+  - if [ -f /etc/acestream/acestream.conf ]; then
+  - ACECON="@/etc/acestream/acestream.conf"
+  - fi
   - if [ -f $CONF_PATH/acestream.conf ]; then
   - ACECON="@$CONF_PATH/acestream.conf"
   - fi

@@ -23,7 +23,21 @@
 
 Для запуску сервера можна використовувати файл конфігурації `./build/$BUILD/acestream.conf`. Під час створення бінарника цей файл копіюється з корня проекту автоматично! У ньому налаштовуються параметри запуску. Мінімально повинен бути рядок `--client-console` і він повинен бути найпершим у файлі!
 
-Щоб запустити сервер AceStream, достатньо запустити бінарник:
+У версії 2.5 за замовчуванням вимкнено інтеграцію з системою. Для того, щоб запуск acestream appimage автоматично встановлював `.desktop` і файл іконки, можна використати аргумент збірки `-i`:
+```
+  ./create-appimage.sh -i
+```
+Або не використовувати цей аргумент при збірці, натомість при запуску acestream appimage передавати змінну оточення `ACESTREAM_DESKTOP_INTEGRATION`:
+```
+  ACESTREAM_DESKTOP_INTEGRATION=yes ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage
+```
+або
+```
+  export ACESTREAM_DESKTOP_INTEGRATION=yes
+  ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage
+```
+
+Щоб просто запустити сервер AceStream, достатньо запустити бінарник:
 ```
   ./build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage
 ```

@@ -46,6 +46,9 @@ script:
   - Categories=GNOME;GTK;Network;
   - StartupNotify=true
   - EOF
+  - if [ "$ACESTREAM_DESKTOP_INTEGRATION" = 'yes' ]; then
+  - touch .ACESTREAM_DESKTOP_INTEGRATION
+  - fi
   - cat > ./AppRun <<\EOF
   - #!/bin/bash
   - ACECON=''
@@ -57,9 +60,9 @@ script:
   - export PYTHONPATH="$HERE/usr/local/lib/python310.zip":"$HERE/usr/local/lib/python3.10":"$HERE/usr/local/lib/python3.10/lib-dynload":"$HERE/usr/local/lib/python3.10/site-packages"
   - export PATH="$HERE/usr/local/bin":"$HERE/usr/bin":"$HERE/bin":"$HERE/sbin":"$HERE/usr/sbin":"$PATH"
   - ACE_VERSION=$("${ROOT}"/acestreamengine --version | grep -Eo "[0-9.]+" | head -n 1)
-  - if [ "$INTEGRATION" = 'yes' ]; then
-  - cp -rf "$HERE"/acestream-$ACE_VERSION.png /home/$USER/.local/share/icons/
-  - cp -rf "$HERE"/acestream-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
+  - if [ -f "$HERE/.ACESTREAM_DESKTOP_INTEGRATION" ] || [ "$ACESTREAM_DESKTOP_INTEGRATION" = 'yes' ]; then
+  - cp -rf "$HERE/acestream-$ACE_VERSION.png" /home/$USER/.local/share/icons/
+  - cp -rf "$HERE/acestream-$ACE_VERSION.desktop" /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop
   - sed -i '3,5d' /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop
   - cp -rf /home/$USER/.local/share/applications/acestream-start-$ACE_VERSION.desktop /home/$USER/.local/share/applications/acestream-stop-$ACE_VERSION.desktop

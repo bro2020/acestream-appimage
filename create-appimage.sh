@@ -13,7 +13,7 @@ fi
 COMMAND="apt update && \
 apt install -y fuse gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat && \
 cd opt/ && \
-ACE_VERSION=$ACE_VERSION USER=$USER INTEGRATION=$INTEGRATION ./pkg2appimage.appimage recipes/acestream.yml"
+ACE_VERSION=$ACE_VERSION USER=$USER ACESTREAM_DESKTOP_INTEGRATION=$INTEGRATION ./pkg2appimage.appimage recipes/acestream.yml"
 if [[ "$@" = "-h" ]] || [[ "$@" = "--help" ]]; then
   echo "
 UA

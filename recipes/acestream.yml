@@ -7,13 +7,13 @@ ingredients:
     - deb http://deb.debian.org/debian-security trixie-security main
   packages:
     - curl
-    - net-tools
     - openssl
     - libsqlite3-0
+    - libterm-readline-gnu-perl
   script:
     - PPWD=$(pwd)
-    - curl -ksL 'https://www.python.org/ftp/python/3.10.18/Python-3.10.18.tgz' | tar -xz
-    - cd Python-3.10.18
+    - curl -ksL "https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz" | tar -xz
+    - cd "Python-$PYTHON_VERSION"
     - apt update
     - apt install -y acl tk-dev zlib1g-dev libssl-dev libsqlite3-dev libffi-dev build-essential
     - ./configure --prefix="${PPWD}"/usr/local --enable-optimizations --enable-shared
@@ -25,7 +25,7 @@ ingredients:
     - rm -vrf /var/cache/apt/*
     - rm -vrf /var/lib/apt/*
     - cd "${PPWD}"
-    - rm -vrf Python-3.10.18
+    - rm -vrf "Python-$PYTHON_VERSION"
     - export LD_LIBRARY_PATH="${PPWD}/usr/local/lib":/x86_64-linux-gnu:/usr/lib:/lib
     - export PATH="${PPWD}"/usr/local/bin:${PATH}
     - curl -ksL "${ACE_URL_APP}" | tar -xz

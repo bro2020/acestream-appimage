@@ -15,6 +15,7 @@ DEFAULT_VER=$(cat "${HER}/VERSION")
 DEFAULT_ACE_VERSION=$(cat "${HER}/ACE_VERSION")
 DEFAULT_ACE_URL_ICON='https://i.ytimg.com/vi/dxar7KLsrg8/hqdefault.jpg'
 DEFAULT_ACE_URL_APP="https://download.acestream.media/linux/acestream_${DEFAULT_ACE_VERSION}_ubuntu_22.04_x86_64_py3.10.tar.gz"
+DEFAULT_PYTHON_VERSION='3.10.18'
 DEFAULT_BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
 DEFAULT_BUILD=${DEFAULT_ACE_VERSION}${DEFAULT_BUILD_TIME}_${DEFAULT_VER}
 DEFAULT_INTEGRATION='no'
@@ -25,6 +26,7 @@ VER="${VER:-${DEFAULT_VER}}"
 ACE_VERSION="${ACE_VERSION:-${DEFAULT_ACE_VERSION}}"
 ACE_URL_ICON="${ACE_URL_ICON:-${DEFAULT_ACE_URL_ICON}}"
 ACE_URL_APP="${ACE_URL_APP:-${DEFAULT_ACE_URL_APP}}"
+PYTHON_VERSION="${PYTHON_VERSION:-${DEFAULT_PYTHON_VERSION}}"
 BUILD_TIME="${BUILD_TIME:-${DEFAULT_BUILD_TIME}}"
 BUILD="${BUILD:-${DEFAULT_BUILD}}"
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-i|--integration)([[:space:]]|$)/p')" ]; then
@@ -38,13 +40,14 @@ else
   WD="${WD:-${DEFAULT_WD}}"
 fi
 COMMAND="apt update && \
-apt install -y fuse gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat && \
+apt install -y libfuse2t64 gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat libgpg-error0 && \
 cd opt/ && \
 ACE_VERSION=$ACE_VERSION \
 USER=$USER \
 ACESTREAM_DESKTOP_INTEGRATION=$INTEGRATION \
 ACE_URL_ICON=\"$ACE_URL_ICON\" \
 ACE_URL_APP=\"$ACE_URL_APP\" \
+PYTHON_VERSION=$PYTHON_VERSION \
 ./pkg2appimage.appimage recipes/acestream.yml"
 
 # Print help message
@@ -84,7 +87,7 @@ if [ -z "$WD" ]; then
   "
   sleep 3
   rm -vrf "${HER}/acestream-$ACE_VERSION" "${HER}/out" && \
-  ACE_VERSION=$ACE_VERSION USER=$USER INTEGRATION=$INTEGRATION ACE_URL_ICON="$ACE_URL_ICON" ACE_URL_APP="$ACE_URL_APP" ./pkg2appimage.appimage recipes/acestream.yml && \
+  ACE_VERSION=$ACE_VERSION USER=$USER ACESTREAM_DESKTOP_INTEGRATION=$INTEGRATION ACE_URL_ICON="$ACE_URL_ICON" ACE_URL_APP="$ACE_URL_APP" PYTHON_VERSION=$PYTHON_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
   mkdir -vp "${HER}/build/$BUILD" && \
   mv -v "${HER}/out"/* "${HER}/build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage" && \
   cp -v "${HER}/acestream.conf" "${HER}"/build/$BUILD/ && \

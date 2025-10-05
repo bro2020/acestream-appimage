@@ -28,7 +28,7 @@ For those who don't understand Ukrainian, i recommend using a translator, like t
 ```
 Або
 ```bash
-  TERMINAL='yes' ./create-appimage.sh
+  TERMINAL=yes ./create-appimage.sh
 ```
 
 Аргумент запуска скрипта `-t` має пріорітет над змінною оточення.

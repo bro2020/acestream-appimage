@@ -31,12 +31,12 @@ PYTHON_VERSION="${PYTHON_VERSION:-${DEFAULT_PYTHON_VERSION}}"
 BUILD_TIME="${BUILD_TIME:-${DEFAULT_BUILD_TIME}}"
 BUILD="${BUILD:-${DEFAULT_BUILD}}"
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-i|--integration)([[:space:]]|$)/p')" ]; then
-  DESKTOP_INTEGRATION='yes'
+  DESKTOP_INTEGRATION=yes
 else
   DESKTOP_INTEGRATION="${DESKTOP_INTEGRATION:-${DEFAULT_DESKTOP_INTEGRATION}}"
 fi
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-t|--terminal)([[:space:]]|$)/p')" ]; then
-  TERMINAL='yes'
+  TERMINAL=yes
 else
   TERMINAL="${TERMINAL:-${DEFAULT_TERMINAL}}"
 fi

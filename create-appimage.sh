@@ -4,6 +4,7 @@
 # Set base variables
 USER=$USER
 HER="$(dirname $(readlink -f "${0}"))"
+DOCKER=$(whereis docker)
 
 # Parsing .env
 if [ -f "${HER}/.env" ];then
@@ -18,8 +19,8 @@ DEFAULT_ACE_URL_APP="https://download.acestream.media/linux/acestream_${DEFAULT_
 DEFAULT_PYTHON_VERSION='3.10.18'
 DEFAULT_BUILD_TIME=$(date +_%d-%m-%Y_%H-%M)
 DEFAULT_BUILD=${DEFAULT_ACE_VERSION}${DEFAULT_BUILD_TIME}_${DEFAULT_VER}
-DEFAULT_INTEGRATION='no'
-DEFAULT_WD=$(whereis docker)
+DEFAULT_DESKTOP_INTEGRATION=no
+DEFAULT_TERMINAL=no
 
 # Processing main variables
 VER="${VER:-${DEFAULT_VER}}"
@@ -30,21 +31,20 @@ PYTHON_VERSION="${PYTHON_VERSION:-${DEFAULT_PYTHON_VERSION}}"
 BUILD_TIME="${BUILD_TIME:-${DEFAULT_BUILD_TIME}}"
 BUILD="${BUILD:-${DEFAULT_BUILD}}"
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-i|--integration)([[:space:]]|$)/p')" ]; then
-  INTEGRATION='yes'
+  DESKTOP_INTEGRATION='yes'
 else
-  INTEGRATION="${INTEGRATION:-${DEFAULT_INTEGRATION}}"
+  DESKTOP_INTEGRATION="${DESKTOP_INTEGRATION:-${DEFAULT_DESKTOP_INTEGRATION}}"
 fi
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-t|--terminal)([[:space:]]|$)/p')" ]; then
-  WD=''
+  TERMINAL=''
 else
-  WD="${WD:-${DEFAULT_WD}}"
+  TERMINAL="${TERMINAL:-${DEFAULT_TERMINAL}}"
 fi
 COMMAND="apt update && \
 apt install -y libfuse2t64 gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat libgpg-error0 && \
-cd opt/ && \
 ACE_VERSION=$ACE_VERSION \
 USER=$USER \
-ACESTREAM_DESKTOP_INTEGRATION=$INTEGRATION \
+ACESTREAM_DESKTOP_INTEGRATION=$DESKTOP_INTEGRATION \
 ACE_URL_ICON=\"$ACE_URL_ICON\" \
 ACE_URL_APP=\"$ACE_URL_APP\" \
 PYTHON_VERSION=$PYTHON_VERSION \
@@ -75,19 +75,19 @@ If it is not possible to detect docker installed on the system, the build is lau
 fi
 
 # Run build appimage
-if [ -z "$WD" ]; then
+if [ -z "$DOCKER" ] || [ "$TERMINAL" = 'yes' ]; then
   echo "
 ### UA
 ### Версія: $VER ###
-### Docker не виявлено! Пробую запустити збірку в поточній ОС ###
+### Docker не виявлено або наполягаєте на терміналі! Пробую запустити збірку в терміналі поточної ОС ###
 ------
 ### EN
-### Версія: $VER ###
-### Docker not detected! Trying to run build on current OS ###
+### Version: $VER ###
+### Docker not detected or force terminal! Trying to run build in terminal on current OS ###
   "
   sleep 3
   rm -vrf "${HER}/acestream-$ACE_VERSION" "${HER}/out" && \
-  ACE_VERSION=$ACE_VERSION USER=$USER ACESTREAM_DESKTOP_INTEGRATION=$INTEGRATION ACE_URL_ICON="$ACE_URL_ICON" ACE_URL_APP="$ACE_URL_APP" PYTHON_VERSION=$PYTHON_VERSION ./pkg2appimage.appimage recipes/acestream.yml && \
+  $COMMAND && \
   mkdir -vp "${HER}/build/$BUILD" && \
   mv -v "${HER}/out"/* "${HER}/build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage" && \
   cp -v "${HER}/acestream.conf" "${HER}"/build/$BUILD/ && \
@@ -130,7 +130,7 @@ else
    -v /tmp/builder-appimage:/opt \
    -v ./pkg2appimage.appimage:/opt/pkg2appimage.appimage \
    -v ./recipes:/opt/recipes \
-   debian:13-slim /bin/bash -c "$COMMAND" && \
+   debian:13-slim /bin/bash -c "cd /opt/ && $COMMAND" && \
   set +x
   sleep 1
   docker rmi debian:13-slim || \

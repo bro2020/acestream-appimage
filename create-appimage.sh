@@ -36,7 +36,7 @@ else
   DESKTOP_INTEGRATION="${DESKTOP_INTEGRATION:-${DEFAULT_DESKTOP_INTEGRATION}}"
 fi
 if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-t|--terminal)([[:space:]]|$)/p')" ]; then
-  TERMINAL=''
+  TERMINAL='yes'
 else
   TERMINAL="${TERMINAL:-${DEFAULT_TERMINAL}}"
 fi

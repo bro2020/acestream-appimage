@@ -5,6 +5,15 @@
 USER=$USER
 HER="$(dirname $(readlink -f "${0}"))"
 DOCKER=$(whereis docker)
+DOCKER_BUILDER_IMAGE='debian:13-slim'
+
+# Parsing arguments
+OPTIONS=$(getopt -o tih -l terminal,integration,help -- "$@")
+if [ $? -ne 0 ]; then
+  echo -e "### UA\n### Некоректний аргумент: \"$1\"! Завершую роботу...\n------\n### EN\n### Incorrect argument: \"$1\"! Exiting..." >&2
+  exit 1
+fi
+eval set -- "$OPTIONS"
 
 # Parsing .env
 if [ -f "${HER}/.env" ];then
@@ -30,16 +39,8 @@ ACE_URL_APP="${ACE_URL_APP:-${DEFAULT_ACE_URL_APP}}"
 PYTHON_VERSION="${PYTHON_VERSION:-${DEFAULT_PYTHON_VERSION}}"
 BUILD_TIME="${BUILD_TIME:-${DEFAULT_BUILD_TIME}}"
 BUILD="${BUILD:-${DEFAULT_BUILD}}"
-if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-i|--integration)([[:space:]]|$)/p')" ]; then
-  DESKTOP_INTEGRATION=yes
-else
-  DESKTOP_INTEGRATION="${DESKTOP_INTEGRATION:-${DEFAULT_DESKTOP_INTEGRATION}}"
-fi
-if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-t|--terminal)([[:space:]]|$)/p')" ]; then
-  TERMINAL=yes
-else
-  TERMINAL="${TERMINAL:-${DEFAULT_TERMINAL}}"
-fi
+DESKTOP_INTEGRATION="${DESKTOP_INTEGRATION:-${DEFAULT_DESKTOP_INTEGRATION}}"
+TERMINAL="${TERMINAL:-${DEFAULT_TERMINAL}}"
 COMMAND="apt update && \
 apt install -y libfuse2t64 gcc curl wget file desktop-file-utils binutils libglib2.0-0 graphicsmagick-imagemagick-compat libgpg-error0 && \
 ACE_VERSION=$ACE_VERSION \
@@ -50,8 +51,18 @@ ACE_URL_APP=\"$ACE_URL_APP\" \
 PYTHON_VERSION=$PYTHON_VERSION \
 ./pkg2appimage.appimage recipes/acestream.yml"
 
+while true; do
+  case $1 in
+    -t|--terminal) DESKTOP_INTEGRATION=yes; shift ;;
+    -i|--integration) TERMINAL=yes; shift ;;
+    -h|--help) PRINT_HELP=yes; shift ;;
+    --) shift; break ;;
+    *) echo -e "### UA\n### Некоректний аргумент: \"$1\"! Завершую роботу...\n------\n### EN\n### Incorrect argument: \"$1\"! Exiting..."; exit 11 ;;
+  esac
+done
+
 # Print help message
-if [ -n "$(echo "$@" | sed -rn '/([[:space:]]|^)(-h|--help)([[:space:]]|$)/p')" ]; then
+if [ "$PRINT_HELP" = 'yes' ]; then
   echo "
 UA
 Версія: $VER
@@ -116,11 +127,11 @@ else
   echo "
 ### UA
 ### Версія: $VER ###
-### Docker виявлено! Запуск збірки в docker контейнері debian:13-slim... ###
+### Docker виявлено! Запуск збірки в docker контейнері $DOCKER_BUILDER_IMAGE... ###
 ------
 ### EN
 ### Version: $VER ###
-### Docker detected! Running build in docker container debian:13-slim... ###
+### Docker detected! Running build in docker container $DOCKER_BUILDER_IMAGE... ###
   "
   sudo rm -vrf /tmp/builder-appimage/* && \
   mkdir -vp /tmp/builder-appimage && \
@@ -130,11 +141,11 @@ else
    -v /tmp/builder-appimage:/opt \
    -v ./pkg2appimage.appimage:/opt/pkg2appimage.appimage \
    -v ./recipes:/opt/recipes \
-   debian:13-slim /bin/bash -c "cd /opt/ && $COMMAND" && \
+   $DOCKER_BUILDER_IMAGE /bin/bash -c "cd /opt/ && $COMMAND" && \
   set +x
   sleep 1
-  docker rmi debian:13-slim || \
-  echo "Docker image 'debian:13-slim' not removed!" && \
+  docker rmi $DOCKER_BUILDER_IMAGE || \
+  echo "Docker image '$DOCKER_BUILDER_IMAGE' not removed!" && \
   mkdir -vp "${HER}/build/$BUILD" && \
   sudo mv -v /tmp/builder-appimage/out/* "${HER}/build/$BUILD/AceStream-$ACE_VERSION-$VER.AppImage" && \
   cp -v "${HER}/acestream.conf" "${HER}/build/$BUILD"/ && \
